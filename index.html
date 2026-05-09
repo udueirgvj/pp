@@ -14,9 +14,8 @@
       color: #e2e8f0;
       direction: rtl;
     }
-    input { font-family: inherit; }
-    button { font-family: inherit; cursor: pointer; }
-    pre { font-family: inherit; }
+    input, button, pre, select, textarea { font-family: inherit; }
+    button { cursor: pointer; }
 
     /* Header */
     .header {
@@ -53,11 +52,11 @@
     /* Main */
     .main { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
 
-    /* Section title */
     .section-title { font-size: 26px; font-weight: 800; color: #f1f5f9; margin-bottom: 8px; text-align: center; }
     .section-sub { color: #64748b; font-size: 13px; text-align: center; margin-bottom: 32px; }
     .accent { color: #0ea5e9; }
     .accent-green { color: #22c55e; }
+    .accent-purple { color: #a78bfa; }
 
     /* Form */
     .form-wrapper { max-width: 560px; margin: 0 auto; display: grid; gap: 20px; }
@@ -132,7 +131,7 @@
     .btn-dl { background: #0ea5e910; border: 1px solid #0ea5e940; color: #0ea5e9; cursor: pointer; }
     .code-pre {
       margin: 0; padding: 20px; overflow-x: auto; font-size: 11px;
-      color: #94a3b8; line-height: 1.7; max-height: 380px; overflow-y: auto;
+      color: #94a3b8; line-height: 1.7; max-height: 300px; overflow-y: auto;
       direction: ltr; text-align: left; font-family: inherit;
     }
 
@@ -143,6 +142,121 @@
       border: none; color: #fff; font-size: 14px; font-weight: 700;
       cursor: pointer; font-family: inherit;
       box-shadow: 0 0 30px #0ea5e940; letter-spacing: 0.5px;
+    }
+
+    /* === GITHUB SECTION === */
+    .github-section {
+      margin-top: 24px; border-radius: 14px;
+      border: 1px solid #1e293b; overflow: hidden;
+    }
+    .github-header {
+      padding: 16px 20px;
+      background: linear-gradient(90deg, #0d1117, #161b22);
+      border-bottom: 1px solid #1e293b;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .github-header-icon { font-size: 22px; }
+    .github-header-title { font-size: 14px; font-weight: 700; color: #f1f5f9; }
+    .github-header-sub { font-size: 11px; color: #475569; margin-top: 2px; }
+    .github-body { padding: 20px; background: #0d1117; }
+
+    .token-row { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 16px; }
+    .token-field-wrap { flex: 1; }
+    .token-label { font-size: 11px; color: #94a3b8; margin-bottom: 6px; display: flex; gap: 8px; align-items: center; }
+    .token-link { font-size: 10px; color: #0ea5e9; text-decoration: none; }
+    .token-link:hover { text-decoration: underline; }
+    .token-input {
+      width: 100%; padding: 10px 14px; border-radius: 8px;
+      background: #0f172a; border: 1px solid #1e293b;
+      color: #e2e8f0; font-size: 12px; font-family: inherit;
+      outline: none; transition: border-color 0.2s;
+    }
+    .token-input:focus { border-color: #6366f1; }
+    .token-toggle {
+      padding: 10px 14px; border-radius: 8px; border: 1px solid #1e293b;
+      background: #0f172a; color: #64748b; font-size: 13px; cursor: pointer; flex-shrink: 0;
+    }
+
+    /* Two big action buttons */
+    .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+    .btn-gh-upload {
+      padding: 14px 16px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #238636, #2ea043);
+      color: #fff; font-size: 13px; font-weight: 700; font-family: inherit;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: 8px; transition: all 0.2s; box-shadow: 0 0 20px #23863640;
+    }
+    .btn-gh-upload:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 24px #23863660; }
+    .btn-gh-upload:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-build-apk {
+      padding: 14px 16px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #7c3aed, #6366f1);
+      color: #fff; font-size: 13px; font-weight: 700; font-family: inherit;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: 8px; transition: all 0.2s; box-shadow: 0 0 20px #7c3aed40;
+    }
+    .btn-build-apk:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 24px #7c3aed60; }
+    .btn-build-apk:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Status log */
+    .status-log {
+      margin-top: 16px; padding: 14px 16px; border-radius: 10px;
+      background: #020509; border: 1px solid #1e293b;
+      font-size: 11px; color: #22c55e; line-height: 2;
+      direction: ltr; text-align: left; min-height: 60px;
+      max-height: 200px; overflow-y: auto;
+    }
+    .status-log .log-line { display: block; }
+    .log-info { color: #94a3b8; }
+    .log-success { color: #22c55e; }
+    .log-error { color: #f87171; }
+    .log-warn { color: #fbbf24; }
+    .log-link { color: #0ea5e9; }
+
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      display: inline-block; width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid transparent; border-top-color: currentColor;
+      animation: spin 0.7s linear infinite; vertical-align: middle;
+    }
+
+    /* APK download card */
+    .apk-download-card {
+      margin-top: 16px; padding: 16px 20px; border-radius: 12px;
+      background: linear-gradient(135deg, #0a2a1a, #0f1f2e);
+      border: 1px solid #22c55e40;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .apk-download-icon { font-size: 32px; flex-shrink: 0; }
+    .apk-download-info { flex: 1; }
+    .apk-download-title { font-size: 13px; font-weight: 700; color: #22c55e; margin-bottom: 4px; }
+    .apk-download-sub { font-size: 11px; color: #475569; }
+    .btn-download-apk {
+      padding: 12px 24px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #fff; font-size: 13px; font-weight: 700; font-family: inherit;
+      cursor: pointer; text-decoration: none; display: inline-flex;
+      align-items: center; gap: 6px; box-shadow: 0 0 20px #22c55e40;
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+      margin-top: 12px; height: 4px; background: #1e293b; border-radius: 2px; overflow: hidden;
+    }
+    @keyframes progress-pulse {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(400%); }
+    }
+    .progress-bar {
+      height: 100%; border-radius: 2px;
+      background: linear-gradient(90deg, #0ea5e9, #6366f1, #22c55e);
+      transition: width 0.5s ease;
+    }
+    .progress-bar.indeterminate {
+      width: 30% !important;
+      animation: progress-pulse 1.4s ease-in-out infinite;
     }
 
     /* Build steps */
@@ -197,11 +311,21 @@
       background: #22c55e10; color: #22c55e; font-size: 13px; font-family: inherit;
     }
 
+    /* Divider */
+    .divider {
+      display: flex; align-items: center; gap: 10px; margin: 20px 0;
+      font-size: 11px; color: #334155;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: #1e293b;
+    }
+
     @media (max-width: 600px) {
       .perms-grid { grid-template-columns: 1fr; }
       .header { padding: 14px 16px; }
       .main { padding: 20px 14px; }
       .steps-nav { display: none; }
+      .action-buttons { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -211,7 +335,7 @@
   <div class="logo">⚡</div>
   <div>
     <div class="logo-text">APK Builder <span class="accent">Pro</span></div>
-    <div class="logo-sub">حوّل تطبيق Netlify إلى APK حقيقي • Capacitor v6</div>
+    <div class="logo-sub">حوّل تطبيق Netlify إلى APK حقيقي • Capacitor v6 + GitHub Actions</div>
   </div>
   <div class="steps-nav" id="stepsNav"></div>
 </div>
@@ -251,6 +375,16 @@ let state = {
   selectedPerms: PERMISSIONS.filter(p => p.required).map(p => p.id),
   activeFile: "capacitor.config.ts",
   copied: "",
+  ghToken: "",
+  showToken: false,
+  ghRepoName: "",
+  ghRepoUrl: "",
+  ghUsername: "",
+  uploadDone: false,
+  buildRunId: null,
+  apkUrl: null,
+  buildStatus: "idle", // idle | uploading | uploaded | building | done | error
+  logLines: [],
 };
 
 // ==============================
@@ -415,6 +549,63 @@ echo "✅ APK Ready!"
 echo "📍 android/app/build/outputs/apk/debug/app-debug.apk"`;
 }
 
+// ==============================
+//  GITHUB ACTIONS WORKFLOW
+// ==============================
+function genWorkflow() {
+  return `name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Add Android platform
+        run: npx cap add android || true
+
+      - name: Create www directory
+        run: |
+          mkdir -p www
+          echo "<html><body>Loading...</body></html>" > www/index.html
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build Debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 7
+`;
+}
+
 function genReadme() {
   const { appName, packageId, netlifyUrl, selectedPerms } = state;
   return `# ${appName || "Chat App"} - APK Build Guide
@@ -439,7 +630,7 @@ npx cap sync android
 cd android && ./gradlew assembleDebug
 \`\`\`
 
-### مسار APK
+### مسار APK بعد البناء
 \`\`\`
 android/app/build/outputs/apk/debug/app-debug.apk
 \`\`\`
@@ -457,6 +648,7 @@ function getFiles() {
     "package.json": genPackage(),
     "build.sh": genBuildSh(),
     "README.md": genReadme(),
+    ".github/workflows/build.yml": genWorkflow(),
   };
 }
 
@@ -466,6 +658,7 @@ const FILE_ICONS = {
   "package.json": "📦",
   "build.sh": "🔨",
   "README.md": "📖",
+  ".github/workflows/build.yml": "🤖",
 };
 
 // ==============================
@@ -475,7 +668,7 @@ function downloadFile(filename, content) {
   const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = url; a.download = filename; a.click();
+  a.href = url; a.download = filename.split('/').pop(); a.click();
   URL.revokeObjectURL(url);
 }
 
@@ -508,6 +701,169 @@ function togglePerm(id) {
     state.selectedPerms = [...state.selectedPerms, id];
   }
   render();
+}
+
+function addLog(msg, type = "info") {
+  const time = new Date().toLocaleTimeString('en', { hour12: false });
+  state.logLines.push({ msg, type, time });
+  render();
+  // scroll log to bottom
+  setTimeout(() => {
+    const log = document.getElementById("statusLog");
+    if (log) log.scrollTop = log.scrollHeight;
+  }, 50);
+}
+
+function toBase64(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+// ==============================
+//  GITHUB API
+// ==============================
+async function ghRequest(path, method = "GET", body = null) {
+  const opts = {
+    method,
+    headers: {
+      "Authorization": `Bearer ${state.ghToken}`,
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "application/json",
+    },
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(`https://api.github.com${path}`, opts);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || `HTTP ${res.status}`);
+  return data;
+}
+
+async function uploadToGitHub() {
+  if (!state.ghToken.trim()) { addLog("❌ الرجاء إدخال GitHub Token أولاً", "error"); return; }
+  state.buildStatus = "uploading";
+  state.logLines = [];
+  state.apkUrl = null;
+  render();
+
+  try {
+    // 1. Get username
+    addLog("🔑 التحقق من Token...", "info");
+    const user = await ghRequest("/user");
+    state.ghUsername = user.login;
+    addLog(`✅ مرحباً ${user.login}`, "success");
+
+    // 2. Generate repo name
+    const repoSlug = (state.appName || "my-app").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") || "apk-builder-app";
+    const repoName = `${repoSlug}-${Date.now().toString(36)}`;
+    state.ghRepoName = repoName;
+
+    // 3. Create repo
+    addLog(`📁 إنشاء مستودع: ${repoName}...`, "info");
+    const repo = await ghRequest("/user/repos", "POST", {
+      name: repoName,
+      description: `APK build for ${state.appName || "My App"} - built with APK Builder Pro`,
+      private: false,
+      auto_init: false,
+    });
+    state.ghRepoUrl = repo.html_url;
+    addLog(`✅ تم إنشاء المستودع: ${repo.html_url}`, "success");
+
+    // 4. Upload files
+    const files = getFiles();
+    const fileEntries = Object.entries(files);
+    for (let i = 0; i < fileEntries.length; i++) {
+      const [path, content] = fileEntries[i];
+      addLog(`📤 رفع ${path} (${i+1}/${fileEntries.length})...`, "info");
+      await ghRequest(`/repos/${user.login}/${repoName}/contents/${path}`, "PUT", {
+        message: `Add ${path}`,
+        content: toBase64(content),
+      });
+      // small delay to avoid rate limits
+      await new Promise(r => setTimeout(r, 400));
+    }
+    addLog("✅ تم رفع جميع الملفات بنجاح!", "success");
+    state.uploadDone = true;
+    state.buildStatus = "uploaded";
+    render();
+
+  } catch (err) {
+    addLog(`❌ خطأ: ${err.message}`, "error");
+    state.buildStatus = "error";
+    render();
+  }
+}
+
+async function buildAPK() {
+  if (!state.ghToken.trim()) { addLog("❌ الرجاء إدخال GitHub Token أولاً", "error"); return; }
+
+  // If not uploaded yet, do upload first
+  if (!state.uploadDone) {
+    await uploadToGitHub();
+    if (state.buildStatus === "error") return;
+  }
+
+  state.buildStatus = "building";
+  addLog("🚀 تشغيل GitHub Actions لبناء APK...", "info");
+  render();
+
+  try {
+    // Trigger workflow_dispatch
+    await ghRequest(`/repos/${state.ghUsername}/${state.ghRepoName}/actions/workflows/build.yml/dispatches`, "POST", {
+      ref: "main",
+    });
+    addLog("⚙️ تم تشغيل workflow بنجاح! انتظار بدء البناء...", "info");
+    
+    // Poll for run
+    let runId = null;
+    for (let attempt = 0; attempt < 20; attempt++) {
+      await new Promise(r => setTimeout(r, 4000));
+      const runs = await ghRequest(`/repos/${state.ghUsername}/${state.ghRepoName}/actions/runs?per_page=5`);
+      if (runs.workflow_runs && runs.workflow_runs.length > 0) {
+        const latest = runs.workflow_runs[0];
+        runId = latest.id;
+        addLog(`🔄 حالة البناء: ${latest.status} (${latest.conclusion || "جارٍ..."})`, "info");
+        if (latest.status === "completed") {
+          if (latest.conclusion === "success") {
+            addLog("✅ البناء اكتمل بنجاح!", "success");
+            state.buildRunId = runId;
+            break;
+          } else {
+            throw new Error(`فشل البناء: ${latest.conclusion}`);
+          }
+        }
+      }
+    }
+
+    if (!runId) throw new Error("انتهت مهلة الانتظار. تحقق من GitHub Actions.");
+
+    // Get artifact
+    addLog("📦 البحث عن ملف APK...", "info");
+    await new Promise(r => setTimeout(r, 2000));
+    const artifacts = await ghRequest(`/repos/${state.ghUsername}/${state.ghRepoName}/actions/runs/${runId}/artifacts`);
+    
+    if (artifacts.artifacts && artifacts.artifacts.length > 0) {
+      const art = artifacts.artifacts.find(a => a.name === "app-debug") || artifacts.artifacts[0];
+      // Direct download URL requires auth - link to actions page instead
+      const actionsUrl = `https://github.com/${state.ghUsername}/${state.ghRepoName}/actions/runs/${runId}`;
+      state.apkUrl = actionsUrl;
+      state.apkArtifactId = art.id;
+      addLog(`🎉 APK جاهز للتنزيل!`, "success");
+      addLog(`🔗 ${actionsUrl}`, "link");
+    } else {
+      throw new Error("لم يُعثر على ملف APK في artifacts");
+    }
+
+    state.buildStatus = "done";
+    render();
+
+  } catch (err) {
+    addLog(`❌ خطأ: ${err.message}`, "error");
+    if (state.ghRepoName) {
+      addLog(`💡 تحقق يدوياً: https://github.com/${state.ghUsername}/${state.ghRepoName}/actions`, "info");
+    }
+    state.buildStatus = "error";
+    render();
+  }
 }
 
 // ==============================
@@ -579,6 +935,7 @@ function renderStep1() {
     <div class="info-text">
       التطبيق يستخدم <strong style="color:#94a3b8">Capacitor</strong> لتحويل موقعك إلى APK حقيقي.
       يفتح تطبيق Android الرابط المباشر من Netlify — لذا أي تحديث على الموقع يظهر فوراً في التطبيق.
+      الآن يمكنك رفع الملفات على <strong style="color:#94a3b8">GitHub</strong> وبناء APK تلقائياً!
     </div>
   </div>
 
@@ -622,7 +979,7 @@ function renderStep3() {
   const files = getFiles();
   const fileTabsHtml = Object.keys(files).map(name => {
     const isActive = state.activeFile === name;
-    return `<button class="file-tab" onclick="setFile('${name}')"
+    return `<button class="file-tab" onclick="setFile('${name.replace(/'/g, "\\'")}')"
       style="
         background:${isActive ? '#0f172a' : '#080c14'};
         border:1px solid ${isActive ? '#1e293b' : 'transparent'};
@@ -630,11 +987,11 @@ function renderStep3() {
         color:${isActive ? '#0ea5e9' : '#475569'};
         font-weight:${isActive ? 600 : 400};
       ">
-      ${FILE_ICONS[name]} ${name}
+      ${FILE_ICONS[name] || '📄'} ${name.split('/').pop()}
     </button>`;
   }).join("");
 
-  const activeContent = escapeHtml(files[state.activeFile]);
+  const activeContent = escapeHtml(files[state.activeFile] || "");
   const isCopied = state.copied === state.activeFile;
 
   const summaryTags = [
@@ -642,7 +999,52 @@ function renderStep3() {
     { icon: "🆔", label: state.packageId || "com.example.app" },
     { icon: "🔒", label: `${state.selectedPerms.length} صلاحية` },
     { icon: "⚡", label: "Capacitor v6" },
+    { icon: "🤖", label: "GitHub Actions" },
   ].map(t => `<div class="summary-tag"><span>${t.icon}</span>${t.label}</div>`).join("");
+
+  // Log lines
+  const logHtml = state.logLines.length === 0
+    ? `<span class="log-info">// في انتظار بدء العملية...</span>`
+    : state.logLines.map(l => {
+        let cls = "log-info";
+        if (l.type === "success") cls = "log-success";
+        if (l.type === "error") cls = "log-error";
+        if (l.type === "warn") cls = "log-warn";
+        if (l.type === "link") return `<span class="log-line"><a href="${l.msg.trim()}" target="_blank" class="log-link" style="text-decoration:underline">${l.msg}</a></span>`;
+        return `<span class="log-line ${cls}">[${l.time}] ${escapeHtml(l.msg)}</span>`;
+      }).join("\n");
+
+  // Progress
+  const isLoading = state.buildStatus === "uploading" || state.buildStatus === "building";
+  const progressPct = state.buildStatus === "done" ? 100 : state.buildStatus === "uploaded" ? 50 : 0;
+
+  // APK download card
+  const apkCard = state.apkUrl ? `
+    <div class="apk-download-card">
+      <div class="apk-download-icon">🎉</div>
+      <div class="apk-download-info">
+        <div class="apk-download-title">✅ APK جاهز للتنزيل!</div>
+        <div class="apk-download-sub">تم بناء تطبيقك بنجاح على GitHub Actions</div>
+      </div>
+      <a href="${state.apkUrl}" target="_blank" class="btn-download-apk">
+        ⬇️ تنزيل APK
+      </a>
+    </div>` : "";
+
+  // Upload/Build buttons state
+  const isIdle = state.buildStatus === "idle" || state.buildStatus === "error";
+  const isUploading = state.buildStatus === "uploading";
+  const isBuilding = state.buildStatus === "building";
+  const isUploaded = state.buildStatus === "uploaded";
+  const isDone = state.buildStatus === "done";
+
+  const uploadBtnLabel = isUploading
+    ? `<span class="spinner"></span> جارٍ الرفع...`
+    : state.uploadDone ? `✅ تم الرفع` : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-left:4px"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> رفع على GitHub`;
+
+  const buildBtnLabel = isBuilding
+    ? `<span class="spinner"></span> جارٍ البناء...`
+    : isDone ? `✅ تم البناء` : `🔨 بناء APK تلقائياً`;
 
   const buildSteps = [
     { num: "01", cmd: "npm install", desc: "تثبيت المتطلبات" },
@@ -666,7 +1068,7 @@ function renderStep3() {
 
   return `
   <div class="section-title">🎉 ملفاتك <span class="accent-green">جاهزة!</span></div>
-  <div class="section-sub">حمّل الملفات وابدأ بناء APK الخاص بك</div>
+  <div class="section-sub">حمّل الملفات، أو ارفعها مباشرةً على GitHub وابنِ APK تلقائياً</div>
 
   <div class="summary-bar">${summaryTags}</div>
 
@@ -684,10 +1086,73 @@ function renderStep3() {
     <pre class="code-pre">${activeContent}</pre>
   </div>
 
-  <button class="btn-dl-all" onclick="downloadAll()">⬇️ تحميل جميع الملفات الخمسة</button>
+  <button class="btn-dl-all" onclick="downloadAll()">⬇️ تحميل جميع الملفات (${Object.keys(files).length})</button>
 
-  <div class="build-steps">
-    <div class="build-title">🚀 خطوات بناء APK</div>
+  <div class="divider">أو استخدم GitHub لبناء APK تلقائياً</div>
+
+  <!-- ===== GITHUB SECTION ===== -->
+  <div class="github-section">
+    <div class="github-header">
+      <div class="github-header-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#f1f5f9"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      </div>
+      <div>
+        <div class="github-header-title">GitHub <span class="accent-purple">Auto Deploy</span></div>
+        <div class="github-header-sub">ارفع الملفات وابنِ APK بضغطة زر واحدة</div>
+      </div>
+    </div>
+    <div class="github-body">
+      <div class="token-row">
+        <div class="token-field-wrap">
+          <div class="token-label">
+            🔑 GitHub Personal Access Token
+            <a class="token-link" href="https://github.com/settings/tokens/new?scopes=repo,workflow&description=APK+Builder+Pro" target="_blank">← احصل على Token</a>
+          </div>
+          <input
+            class="token-input"
+            id="ghTokenInput"
+            type="${state.showToken ? 'text' : 'password'}"
+            placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+            value="${state.ghToken}"
+            oninput="state.ghToken=this.value"
+            autocomplete="off"
+          />
+        </div>
+        <button class="token-toggle" onclick="state.showToken=!state.showToken;render()">${state.showToken ? '🙈' : '👁️'}</button>
+      </div>
+
+      <div style="font-size:10px;color:#475569;margin-bottom:14px;padding:8px 12px;background:#080c14;border-radius:6px;border:1px solid #1e293b;direction:ltr;text-align:left;">
+        ℹ️ Required scopes: <code style="color:#0ea5e9">repo</code> + <code style="color:#0ea5e9">workflow</code> — Token stays in your browser only, never sent to any server.
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-gh-upload"
+          onclick="uploadToGitHub()"
+          ${isUploading || (state.uploadDone && state.buildStatus !== 'error') ? 'disabled' : ''}>
+          ${uploadBtnLabel}
+        </button>
+        <button class="btn-build-apk"
+          onclick="buildAPK()"
+          ${isBuilding || isDone ? 'disabled' : ''}>
+          ${buildBtnLabel}
+        </button>
+      </div>
+
+      ${isLoading ? `<div class="progress-wrap"><div class="progress-bar indeterminate"></div></div>` : progressPct > 0 ? `<div class="progress-wrap"><div class="progress-bar" style="width:${progressPct}%"></div></div>` : ''}
+
+      <div class="status-log" id="statusLog" style="margin-top:${state.logLines.length > 0 || isLoading ? '12' : '0'}px;${state.logLines.length === 0 && !isLoading ? 'display:none' : ''}">${logHtml}</div>
+
+      ${apkCard}
+
+      ${state.ghRepoUrl ? `
+        <div style="margin-top:10px;font-size:11px;color:#475569;text-align:center">
+          📁 المستودع: <a href="${state.ghRepoUrl}" target="_blank" style="color:#0ea5e9;text-decoration:underline">${state.ghRepoUrl}</a>
+        </div>` : ''}
+    </div>
+  </div>
+
+  <div class="build-steps" style="margin-top:20px">
+    <div class="build-title">🚀 خطوات البناء اليدوي (بديل)</div>
     ${buildSteps}
     <div class="apk-path">
       <div class="apk-path-label">📍 مسار APK بعد البناء:</div>
@@ -739,7 +1204,6 @@ function attachEvents() {
 }
 
 function updateNav() {
-  // Re-render just the nav bar button state
   const btn = document.querySelector(".btn-next");
   if (btn) {
     const ok = canProceed();
@@ -763,20 +1227,26 @@ window.copyActive = function() { copyText(getFiles()[state.activeFile], state.ac
 window.dlActive   = function() { downloadFile(state.activeFile, getFiles()[state.activeFile]); }
 window.downloadAll = downloadAll;
 window.copyCmd = function(cmd, key) { copyText(cmd, key); }
+window.uploadToGitHub = uploadToGitHub;
+window.buildAPK = buildAPK;
 window.resetAll = function() {
   state = {
     step: 0, appName: "", packageId: "", netlifyUrl: "",
     selectedPerms: PERMISSIONS.filter(p => p.required).map(p => p.id),
     activeFile: "capacitor.config.ts", copied: "",
+    ghToken: "", showToken: false,
+    ghRepoName: "", ghRepoUrl: "", ghUsername: "",
+    uploadDone: false, buildRunId: null, apkUrl: null,
+    buildStatus: "idle", logLines: [],
   };
   render();
 }
 
 function escapeHtml(str) {
-  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 function escapeAttr(str) {
-  return str.replace(/'/g,"\\'");
+  return String(str).replace(/'/g,"\\'");
 }
 
 // Boot
@@ -784,4 +1254,3 @@ render();
 </script>
 </body>
 </html>
-
