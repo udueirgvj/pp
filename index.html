@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>APK Builder Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: #080c14;
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      color: #e2e8f0;
+      direction: rtl;
+    }
+    input { font-family: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    pre { font-family: inherit; }
+
+    /* Header */
+    .header {
+      border-bottom: 1px solid #1e293b;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: linear-gradient(90deg, #080c14 0%, #0f172a 100%);
+      flex-wrap: wrap;
+    }
+    .logo {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; box-shadow: 0 0 20px #0ea5e960;
+      flex-shrink: 0;
+    }
+    .logo-text { font-size: 18px; font-weight: 700; color: #f1f5f9; letter-spacing: -0.5px; }
+    .logo-sub { font-size: 11px; color: #475569; margin-top: 1px; }
+    .steps-nav { margin-right: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+    .step-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 20px;
+      font-size: 11px; font-family: inherit; border: none; background: transparent;
+      transition: all 0.2s;
+    }
+    .step-dot {
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #fff; flex-shrink: 0;
+    }
+
+    /* Main */
+    .main { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+
+    /* Section title */
+    .section-title { font-size: 26px; font-weight: 800; color: #f1f5f9; margin-bottom: 8px; text-align: center; }
+    .section-sub { color: #64748b; font-size: 13px; text-align: center; margin-bottom: 32px; }
+    .accent { color: #0ea5e9; }
+    .accent-green { color: #22c55e; }
+
+    /* Form */
+    .form-wrapper { max-width: 560px; margin: 0 auto; display: grid; gap: 20px; }
+    .field-label { font-size: 12px; color: #94a3b8; margin-bottom: 8px; display: block; font-weight: 500; }
+    .field-input {
+      width: 100%; padding: 12px 16px; border-radius: 10px;
+      background: #0f172a; border: 1px solid #1e293b;
+      color: #e2e8f0; font-size: 13px; font-family: inherit;
+      outline: none; transition: border-color 0.2s;
+    }
+    .field-input:focus { border-color: #0ea5e9; }
+    .field-hint { font-size: 11px; color: #475569; margin-top: 5px; }
+
+    /* Info card */
+    .info-card {
+      margin-top: 32px; padding: 16px; border-radius: 10px;
+      background: #0f172a; border: 1px solid #1e293b;
+      max-width: 560px; margin: 32px auto 0;
+    }
+    .info-title { font-size: 11px; color: #0ea5e9; margin-bottom: 8px; font-weight: 600; }
+    .info-text { font-size: 11px; color: #64748b; line-height: 1.8; }
+
+    /* Permissions grid */
+    .perms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .perm-card {
+      padding: 12px 16px; border-radius: 10px;
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer; transition: all 0.2s; position: relative;
+    }
+    .perm-icon { font-size: 20px; flex-shrink: 0; }
+    .perm-name { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+    .perm-desc { font-size: 10px; color: #475569; }
+    .perm-badge { font-size: 9px; color: #22c55e; margin-right: 6px; font-weight: 400; }
+    .perm-check {
+      width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #fff; margin-right: auto;
+    }
+
+    /* Summary bar */
+    .summary-bar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+    .summary-tag {
+      padding: 6px 14px; border-radius: 20px; background: #0f172a;
+      border: 1px solid #1e293b; font-size: 11px; color: #94a3b8;
+      display: flex; gap: 6px; align-items: center;
+    }
+
+    /* File tabs */
+    .file-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+    .file-tab {
+      padding: 8px 14px; border-radius: 8px 8px 0 0;
+      font-size: 11px; cursor: pointer; display: flex; gap: 5px; align-items: center;
+      font-family: inherit; border: none; transition: all 0.2s;
+    }
+
+    /* Code block */
+    .code-block {
+      background: #0f172a; border: 1px solid #1e293b;
+      border-radius: 0 8px 8px 8px;
+    }
+    .code-header {
+      padding: 8px 16px; border-bottom: 1px solid #1e293b;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .code-filename { font-size: 11px; color: #475569; }
+    .code-actions { display: flex; gap: 8px; }
+    .btn-copy, .btn-dl {
+      padding: 4px 12px; border-radius: 6px; font-size: 11px; font-family: inherit; border: none;
+    }
+    .btn-copy { background: transparent; border: 1px solid #334155; color: #94a3b8; cursor: pointer; }
+    .btn-copy.copied { color: #22c55e; }
+    .btn-dl { background: #0ea5e910; border: 1px solid #0ea5e940; color: #0ea5e9; cursor: pointer; }
+    .code-pre {
+      margin: 0; padding: 20px; overflow-x: auto; font-size: 11px;
+      color: #94a3b8; line-height: 1.7; max-height: 380px; overflow-y: auto;
+      direction: ltr; text-align: left; font-family: inherit;
+    }
+
+    /* Download all */
+    .btn-dl-all {
+      display: block; margin: 20px auto 0; padding: 14px 40px; border-radius: 12px;
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      border: none; color: #fff; font-size: 14px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      box-shadow: 0 0 30px #0ea5e940; letter-spacing: 0.5px;
+    }
+
+    /* Build steps */
+    .build-steps {
+      margin-top: 28px; padding: 20px; border-radius: 12px;
+      background: #0f172a; border: 1px solid #1e293b;
+    }
+    .build-title { font-size: 13px; font-weight: 700; color: #f1f5f9; margin-bottom: 16px; }
+    .build-step { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 12px; }
+    .build-num { color: #0ea5e9; font-size: 10px; font-weight: 700; min-width: 24px; margin-top: 10px; }
+    .build-cmd {
+      display: block; background: #080c14; padding: 8px 14px;
+      border-radius: 6px; font-size: 11px; color: #22c55e;
+      border: 1px solid #1e293b; direction: ltr; text-align: left; font-family: inherit;
+    }
+    .build-desc { font-size: 10px; color: #475569; margin-top: 4px; }
+    .btn-copy-sm {
+      padding: 4px 8px; border-radius: 5px; border: 1px solid #1e293b;
+      background: transparent; color: #475569; font-size: 9px; cursor: pointer;
+      font-family: inherit; margin-top: 8px; flex-shrink: 0;
+    }
+    .apk-path {
+      margin-top: 16px; padding: 12px; border-radius: 8px;
+      background: #080c14; border: 1px solid #1e293b;
+    }
+    .apk-path-label { font-size: 10px; color: #22c55e; margin-bottom: 4px; font-weight: 600; }
+    .apk-path-code { font-size: 10px; color: #94a3b8; direction: ltr; display: block; font-family: inherit; }
+
+    /* Navigation */
+    .nav-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 36px; padding-top: 24px; border-top: 1px solid #1e293b;
+    }
+    .btn-back {
+      padding: 10px 24px; border-radius: 8px; border: 1px solid #1e293b;
+      background: transparent; font-size: 13px; font-family: inherit;
+    }
+    .dots { display: flex; gap: 6px; }
+    .dot { height: 6px; border-radius: 3px; transition: all 0.3s; }
+    .btn-next {
+      padding: 10px 24px; border-radius: 8px; border: none;
+      font-size: 13px; font-family: inherit; font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-next.active {
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      color: #fff; box-shadow: 0 0 20px #0ea5e930;
+    }
+    .btn-next.inactive { background: #1e293b; color: #334155; cursor: not-allowed; }
+    .btn-reset {
+      padding: 10px 24px; border-radius: 8px; border: 1px solid #22c55e40;
+      background: #22c55e10; color: #22c55e; font-size: 13px; font-family: inherit;
+    }
+
+    @media (max-width: 600px) {
+      .perms-grid { grid-template-columns: 1fr; }
+      .header { padding: 14px 16px; }
+      .main { padding: 20px 14px; }
+      .steps-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">⚡</div>
+  <div>
+    <div class="logo-text">APK Builder <span class="accent">Pro</span></div>
+    <div class="logo-sub">حوّل تطبيق Netlify إلى APK حقيقي • Capacitor v6</div>
+  </div>
+  <div class="steps-nav" id="stepsNav"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<script>
+// ==============================
+//  STATE
+// ==============================
+const PERMISSIONS = [
+  { id: "INTERNET", label: "الإنترنت", icon: "🌐", required: true, desc: "اتصال بالإنترنت (إلزامي)" },
+  { id: "ACCESS_NETWORK_STATE", label: "حالة الشبكة", icon: "📡", required: true, desc: "فحص حالة الاتصال" },
+  { id: "CAMERA", label: "الكاميرا", icon: "📷", required: false, desc: "إرسال صور ومقاطع مرئية" },
+  { id: "RECORD_AUDIO", label: "الميكروفون", icon: "🎙️", required: false, desc: "الرسائل الصوتية والمكالمات" },
+  { id: "READ_MEDIA_IMAGES", label: "قراءة الصور", icon: "🖼️", required: false, desc: "مشاركة الصور من المعرض" },
+  { id: "READ_MEDIA_VIDEO", label: "قراءة الفيديو", icon: "🎬", required: false, desc: "مشاركة مقاطع الفيديو" },
+  { id: "READ_EXTERNAL_STORAGE", label: "التخزين (قديم)", icon: "💾", required: false, desc: "للأجهزة Android <13" },
+  { id: "WRITE_EXTERNAL_STORAGE", label: "الكتابة للتخزين", icon: "📝", required: false, desc: "حفظ الملفات (Android <10)" },
+  { id: "VIBRATE", label: "الاهتزاز", icon: "📳", required: false, desc: "اهتزاز عند الإشعارات" },
+  { id: "POST_NOTIFICATIONS", label: "الإشعارات", icon: "🔔", required: false, desc: "إشعارات الرسائل الجديدة" },
+  { id: "RECEIVE_BOOT_COMPLETED", label: "تشغيل عند الإقلاع", icon: "🚀", required: false, desc: "استقبال إشعارات عند بدء الجهاز" },
+  { id: "WAKE_LOCK", label: "إبقاء الشاشة", icon: "💡", required: false, desc: "منع النوم أثناء المكالمات" },
+  { id: "READ_CONTACTS", label: "جهات الاتصال", icon: "👥", required: false, desc: "دعوة الأصدقاء عبر جهات الاتصال" },
+  { id: "USE_BIOMETRIC", label: "البصمة / الوجه", icon: "🔐", required: false, desc: "قفل التطبيق بالبصمة" },
+  { id: "FLASHLIGHT", label: "الفلاش", icon: "🔦", required: false, desc: "فلاش أثناء المكالمات" },
+  { id: "CHANGE_NETWORK_STATE", label: "تغيير الشبكة", icon: "🔄", required: false, desc: "إدارة اتصالات Wi-Fi" },
+];
+
+const STEPS = ["معلومات التطبيق", "الصلاحيات", "الملفات والتحميل"];
+
+let state = {
+  step: 0,
+  appName: "",
+  packageId: "",
+  netlifyUrl: "",
+  selectedPerms: PERMISSIONS.filter(p => p.required).map(p => p.id),
+  activeFile: "capacitor.config.ts",
+  copied: "",
+};
+
+// ==============================
+//  GENERATORS
+// ==============================
+function genCapacitor() {
+  const { appName, packageId, netlifyUrl } = state;
+  return `import { CapacitorConfig } from '@capacitor/cli';
+
+const config: CapacitorConfig = {
+  appId: '${packageId || "com.example.chatapp"}',
+  appName: '${appName || "My Chat App"}',
+  webDir: 'www',
+  server: {
+    url: '${netlifyUrl || "https://your-app.netlify.app"}',
+    cleartext: false,
+    androidScheme: 'https',
+  },
+  android: {
+    allowMixedContent: false,
+    captureInput: true,
+    webContentsDebuggingEnabled: false,
+  },
+  plugins: {
+    PushNotifications: {
+      presentationOptions: ['badge', 'sound', 'alert'],
+    },
+    LocalNotifications: {
+      smallIcon: 'ic_stat_icon_config_sample',
+      iconColor: '#0ea5e9',
+      sound: 'beep.wav',
+    },
+    SplashScreen: {
+      launchShowDuration: 2000,
+      launchAutoHide: true,
+      backgroundColor: '#0f172a',
+      androidSplashResourceName: 'splash',
+      showSpinner: false,
+    },
+    StatusBar: {
+      style: 'DARK',
+      backgroundColor: '#0f172a',
+    },
+  },
+};
+
+export default config;`;
+}
+
+function genManifest() {
+  const { appName, packageId, selectedPerms } = state;
+  const lines = selectedPerms.map(p => `    <uses-permission android:name="android.permission.${p}" />`).join("\n");
+  return `<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="${packageId || "com.example.chatapp"}">
+
+    <!-- ===== Permissions ===== -->
+${lines}
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="${appName || "My Chat App"}"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="false"
+        android:networkSecurityConfig="@xml/network_security_config">
+
+        <activity
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+            android:name="com.getcapacitor.BridgeActivity"
+            android:label="${appName || "My Chat App"}"
+            android:launchMode="singleTask"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBarLaunch">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="\${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+</manifest>`;
+}
+
+function genPackage() {
+  const name = (state.appName || "chat-app").toLowerCase().replace(/\s+/g, "-");
+  return `{
+  "name": "${name}",
+  "version": "1.0.0",
+  "description": "Chat App - Built with Capacitor",
+  "scripts": {
+    "build": "echo 'web build done'",
+    "sync": "npx cap sync",
+    "android": "npx cap open android",
+    "build:apk": "cd android && ./gradlew assembleDebug",
+    "build:aab": "cd android && ./gradlew bundleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/camera": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/filesystem": "^6.0.0",
+    "@capacitor/haptics": "^6.0.0",
+    "@capacitor/keyboard": "^6.0.0",
+    "@capacitor/local-notifications": "^6.0.0",
+    "@capacitor/network": "^6.0.0",
+    "@capacitor/push-notifications": "^6.0.0",
+    "@capacitor/share": "^6.0.0",
+    "@capacitor/splash-screen": "^6.0.0",
+    "@capacitor/status-bar": "^6.0.0",
+    "@capacitor/toast": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0"
+  }
+}`;
+}
+
+function genBuildSh() {
+  return `#!/bin/bash
+# ============================================
+#   APK Builder Script - Capacitor Live URL
+# ============================================
+echo "📦 Installing dependencies..."
+npm install
+echo "🔧 Initializing Capacitor..."
+npx cap init
+echo "➕ Adding Android platform..."
+npx cap add android
+echo "📁 Creating dummy webDir..."
+mkdir -p www
+echo "<html><body>Loading...</body></html>" > www/index.html
+echo "🔄 Syncing project..."
+npx cap sync android
+echo "🏗️  Building Debug APK..."
+cd android
+chmod +x gradlew
+./gradlew assembleDebug
+echo ""
+echo "✅ APK Ready!"
+echo "📍 android/app/build/outputs/apk/debug/app-debug.apk"`;
+}
+
+function genReadme() {
+  const { appName, packageId, netlifyUrl, selectedPerms } = state;
+  return `# ${appName || "Chat App"} - APK Build Guide
+
+## معلومات التطبيق
+- **اسم التطبيق:** ${appName || "Chat App"}
+- **معرّف الحزمة:** ${packageId || "com.example.chatapp"}
+- **رابط التطبيق:** ${netlifyUrl || "https://your-app.netlify.app"}
+
+## الصلاحيات المضمّنة (${selectedPerms.length})
+${selectedPerms.map(p => `- \`${p}\``).join("\n")}
+
+---
+
+## خطوات البناء
+
+\`\`\`bash
+npm install
+npx cap add android
+mkdir -p www && echo "<html></html>" > www/index.html
+npx cap sync android
+cd android && ./gradlew assembleDebug
+\`\`\`
+
+### مسار APK
+\`\`\`
+android/app/build/outputs/apk/debug/app-debug.apk
+\`\`\`
+
+### تثبيت على الجهاز
+\`\`\`bash
+adb install android/app/build/outputs/apk/debug/app-debug.apk
+\`\`\``;
+}
+
+function getFiles() {
+  return {
+    "capacitor.config.ts": genCapacitor(),
+    "AndroidManifest.xml": genManifest(),
+    "package.json": genPackage(),
+    "build.sh": genBuildSh(),
+    "README.md": genReadme(),
+  };
+}
+
+const FILE_ICONS = {
+  "capacitor.config.ts": "⚙️",
+  "AndroidManifest.xml": "📋",
+  "package.json": "📦",
+  "build.sh": "🔨",
+  "README.md": "📖",
+};
+
+// ==============================
+//  HELPERS
+// ==============================
+function downloadFile(filename, content) {
+  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadAll() {
+  const files = getFiles();
+  Object.entries(files).forEach(([name, content], i) => {
+    setTimeout(() => downloadFile(name, content), i * 300);
+  });
+}
+
+function copyText(text, key) {
+  navigator.clipboard.writeText(text).then(() => {
+    state.copied = key;
+    render();
+    setTimeout(() => { state.copied = ""; render(); }, 2000);
+  });
+}
+
+function canProceed() {
+  if (state.step === 0) return state.appName.trim() && state.packageId.trim() && state.netlifyUrl.trim();
+  return true;
+}
+
+function togglePerm(id) {
+  const perm = PERMISSIONS.find(p => p.id === id);
+  if (perm.required) return;
+  if (state.selectedPerms.includes(id)) {
+    state.selectedPerms = state.selectedPerms.filter(p => p !== id);
+  } else {
+    state.selectedPerms = [...state.selectedPerms, id];
+  }
+  render();
+}
+
+// ==============================
+//  RENDER
+// ==============================
+function render() {
+  renderNav();
+  renderContent();
+}
+
+function renderNav() {
+  const nav = document.getElementById("stepsNav");
+  nav.innerHTML = STEPS.map((s, i) => {
+    const isActive = state.step === i;
+    const isDone = state.step > i;
+    return `<button class="step-btn" onclick="${isDone ? `goStep(${i})` : ''}"
+      style="
+        background:${isActive ? '#0ea5e920' : 'transparent'};
+        border:1px solid ${isActive ? '#0ea5e940' : 'transparent'};
+        border-radius:20px;
+        color:${isActive ? '#0ea5e9' : isDone ? '#22c55e' : '#475569'};
+        font-weight:${isActive ? 600 : 400};
+        cursor:${isDone ? 'pointer' : 'default'};
+        padding:5px 14px;
+      ">
+      <span class="step-dot" style="background:${isDone ? '#22c55e' : isActive ? '#0ea5e9' : '#1e293b'}">
+        ${isDone ? '✓' : i + 1}
+      </span>
+      ${s}
+    </button>`;
+  }).join("");
+}
+
+function goStep(i) { state.step = i; render(); }
+
+function renderContent() {
+  const main = document.getElementById("mainContent");
+  if (state.step === 0) main.innerHTML = renderStep1();
+  else if (state.step === 1) main.innerHTML = renderStep2();
+  else main.innerHTML = renderStep3();
+  attachEvents();
+}
+
+function renderStep1() {
+  return `
+  <div class="section-title">معلومات <span class="accent">تطبيقك</span></div>
+  <div class="section-sub">أدخل بيانات مشروعك على Netlify</div>
+
+  <div class="form-wrapper">
+    <div>
+      <label class="field-label">📱 اسم التطبيق</label>
+      <input class="field-input" id="f-name" placeholder="مثال: ماي شات" value="${state.appName}" />
+      <div class="field-hint">الاسم الذي يظهر على الجهاز</div>
+    </div>
+    <div>
+      <label class="field-label">🆔 معرّف الحزمة (Package ID)</label>
+      <input class="field-input" id="f-pkg" placeholder="com.company.chatapp" value="${state.packageId}" />
+      <div class="field-hint">يجب أن يكون فريداً — لا تغيّره بعد النشر</div>
+    </div>
+    <div>
+      <label class="field-label">🔗 رابط Netlify</label>
+      <input class="field-input" id="f-url" placeholder="https://your-app.netlify.app" value="${state.netlifyUrl}" />
+      <div class="field-hint">رابط تطبيقك الحالي على Netlify</div>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-title">⚡ كيف يعمل؟</div>
+    <div class="info-text">
+      التطبيق يستخدم <strong style="color:#94a3b8">Capacitor</strong> لتحويل موقعك إلى APK حقيقي.
+      يفتح تطبيق Android الرابط المباشر من Netlify — لذا أي تحديث على الموقع يظهر فوراً في التطبيق.
+    </div>
+  </div>
+
+  ${renderNavBar()}`;
+}
+
+function renderStep2() {
+  const permsHtml = PERMISSIONS.map(perm => {
+    const isSelected = state.selectedPerms.includes(perm.id);
+    return `
+    <div class="perm-card"
+      onclick="togglePerm('${perm.id}')"
+      style="
+        background:${isSelected ? '#0ea5e910' : '#0f172a'};
+        border:1px solid ${isSelected ? '#0ea5e940' : '#1e293b'};
+        cursor:${perm.required ? 'not-allowed' : 'pointer'};
+        opacity:${perm.required ? 0.85 : 1};
+      ">
+      <span class="perm-icon">${perm.icon}</span>
+      <div style="flex:1">
+        <div class="perm-name" style="color:${isSelected ? '#0ea5e9' : '#94a3b8'}">
+          ${perm.label}
+          ${perm.required ? '<span class="perm-badge">إلزامي</span>' : ''}
+        </div>
+        <div class="perm-desc">${perm.desc}</div>
+      </div>
+      <div class="perm-check" style="background:${isSelected ? '#0ea5e9' : '#1e293b'};border:2px solid ${isSelected ? '#0ea5e9' : '#334155'}">
+        ${isSelected ? '✓' : ''}
+      </div>
+    </div>`;
+  }).join("");
+
+  return `
+  <div class="section-title"><span class="accent">الصلاحيات</span> المطلوبة</div>
+  <div class="section-sub">اختر الصلاحيات لتطبيق الدردشة (${state.selectedPerms.length} مختارة)</div>
+  <div class="perms-grid">${permsHtml}</div>
+  ${renderNavBar()}`;
+}
+
+function renderStep3() {
+  const files = getFiles();
+  const fileTabsHtml = Object.keys(files).map(name => {
+    const isActive = state.activeFile === name;
+    return `<button class="file-tab" onclick="setFile('${name}')"
+      style="
+        background:${isActive ? '#0f172a' : '#080c14'};
+        border:1px solid ${isActive ? '#1e293b' : 'transparent'};
+        border-bottom:1px solid ${isActive ? '#0f172a' : '#1e293b'};
+        color:${isActive ? '#0ea5e9' : '#475569'};
+        font-weight:${isActive ? 600 : 400};
+      ">
+      ${FILE_ICONS[name]} ${name}
+    </button>`;
+  }).join("");
+
+  const activeContent = escapeHtml(files[state.activeFile]);
+  const isCopied = state.copied === state.activeFile;
+
+  const summaryTags = [
+    { icon: "📱", label: state.appName || "App Name" },
+    { icon: "🆔", label: state.packageId || "com.example.app" },
+    { icon: "🔒", label: `${state.selectedPerms.length} صلاحية` },
+    { icon: "⚡", label: "Capacitor v6" },
+  ].map(t => `<div class="summary-tag"><span>${t.icon}</span>${t.label}</div>`).join("");
+
+  const buildSteps = [
+    { num: "01", cmd: "npm install", desc: "تثبيت المتطلبات" },
+    { num: "02", cmd: "npx cap add android", desc: "إضافة منصة Android" },
+    { num: "03", cmd: "mkdir -p www && echo '<html></html>' > www/index.html", desc: "إنشاء مجلد www" },
+    { num: "04", cmd: "npx cap sync android", desc: "مزامنة الملفات" },
+    { num: "05", cmd: "cd android && ./gradlew assembleDebug", desc: "بناء APK" },
+  ].map(s => `
+    <div class="build-step">
+      <span class="build-num">${s.num}</span>
+      <div style="flex:1">
+        <code class="build-cmd">${escapeHtml(s.cmd)}</code>
+        <div class="build-desc">${s.desc}</div>
+      </div>
+      <button class="btn-copy-sm ${state.copied === s.num ? 'copied' : ''}"
+        onclick="copyCmd('${escapeAttr(s.cmd)}','${s.num}')"
+        style="color:${state.copied === s.num ? '#22c55e' : '#475569'}">
+        ${state.copied === s.num ? '✓' : 'نسخ'}
+      </button>
+    </div>`).join("");
+
+  return `
+  <div class="section-title">🎉 ملفاتك <span class="accent-green">جاهزة!</span></div>
+  <div class="section-sub">حمّل الملفات وابدأ بناء APK الخاص بك</div>
+
+  <div class="summary-bar">${summaryTags}</div>
+
+  <div class="file-tabs">${fileTabsHtml}</div>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-filename">${state.activeFile}</span>
+      <div class="code-actions">
+        <button class="btn-copy ${isCopied ? 'copied' : ''}" onclick="copyActive()">
+          ${isCopied ? '✓ تم النسخ' : 'نسخ'}
+        </button>
+        <button class="btn-dl" onclick="dlActive()">تحميل ↓</button>
+      </div>
+    </div>
+    <pre class="code-pre">${activeContent}</pre>
+  </div>
+
+  <button class="btn-dl-all" onclick="downloadAll()">⬇️ تحميل جميع الملفات الخمسة</button>
+
+  <div class="build-steps">
+    <div class="build-title">🚀 خطوات بناء APK</div>
+    ${buildSteps}
+    <div class="apk-path">
+      <div class="apk-path-label">📍 مسار APK بعد البناء:</div>
+      <code class="apk-path-code">android/app/build/outputs/apk/debug/app-debug.apk</code>
+    </div>
+  </div>
+
+  ${renderNavBar()}`;
+}
+
+function renderNavBar() {
+  const isLast = state.step === 2;
+  const isFirst = state.step === 0;
+  const ok = canProceed();
+
+  const dotsHtml = [0,1,2].map(i => `
+    <div class="dot" style="
+      width:${i===state.step?24:6}px;
+      background:${i<=state.step?'#0ea5e9':'#1e293b'};
+    "></div>`).join("");
+
+  const rightBtn = isLast
+    ? `<button class="btn-reset" onclick="resetAll()">+ مشروع جديد</button>`
+    : `<button class="btn-next ${ok ? 'active' : 'inactive'}" onclick="nextStep()">
+        ${state.step === 1 ? '⚡ توليد الملفات' : 'التالي ←'}
+      </button>`;
+
+  return `
+  <div class="nav-bar">
+    <button class="btn-back" onclick="prevStep()"
+      style="color:${isFirst ? '#1e293b' : '#94a3b8'};cursor:${isFirst ? 'not-allowed' : 'pointer'}">
+      → السابق
+    </button>
+    <div class="dots">${dotsHtml}</div>
+    ${rightBtn}
+  </div>`;
+}
+
+// ==============================
+//  ATTACH EVENTS
+// ==============================
+function attachEvents() {
+  const name = document.getElementById("f-name");
+  const pkg = document.getElementById("f-pkg");
+  const url = document.getElementById("f-url");
+  if (name) name.addEventListener("input", e => { state.appName = e.target.value; updateNav(); });
+  if (pkg)  pkg.addEventListener("input",  e => { state.packageId = e.target.value; updateNav(); });
+  if (url)  url.addEventListener("input",  e => { state.netlifyUrl = e.target.value; updateNav(); });
+}
+
+function updateNav() {
+  // Re-render just the nav bar button state
+  const btn = document.querySelector(".btn-next");
+  if (btn) {
+    const ok = canProceed();
+    btn.className = `btn-next ${ok ? 'active' : 'inactive'}`;
+    btn.style.background = ok ? 'linear-gradient(135deg, #0ea5e9, #6366f1)' : '#1e293b';
+    btn.style.color = ok ? '#fff' : '#334155';
+    btn.style.cursor = ok ? 'pointer' : 'not-allowed';
+    btn.style.boxShadow = ok ? '0 0 20px #0ea5e930' : 'none';
+  }
+}
+
+// ==============================
+//  ACTIONS (global)
+// ==============================
+window.nextStep = function() { if (canProceed() && state.step < 2) { state.step++; render(); } }
+window.prevStep = function() { if (state.step > 0) { state.step--; render(); } }
+window.goStep   = function(i) { state.step = i; render(); }
+window.togglePerm = togglePerm;
+window.setFile  = function(n) { state.activeFile = n; render(); }
+window.copyActive = function() { copyText(getFiles()[state.activeFile], state.activeFile); }
+window.dlActive   = function() { downloadFile(state.activeFile, getFiles()[state.activeFile]); }
+window.downloadAll = downloadAll;
+window.copyCmd = function(cmd, key) { copyText(cmd, key); }
+window.resetAll = function() {
+  state = {
+    step: 0, appName: "", packageId: "", netlifyUrl: "",
+    selectedPerms: PERMISSIONS.filter(p => p.required).map(p => p.id),
+    activeFile: "capacitor.config.ts", copied: "",
+  };
+  render();
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function escapeAttr(str) {
+  return str.replace(/'/g,"\\'");
+}
+
+// Boot
+render();
+</script>
+</body>
+</html>
+
